@@ -5,7 +5,7 @@ function x = jacobi(A, b, tol=10e-6, max_iter=25)
     % max_iter es el número máximo de iteraciones
 
     n = length(b);
-    x = zeros(n, 1); % Inicializa el vector solución
+    x = ones(n, 1); % Inicializa el vector solución
     x_old = x;
 
     for iter = 1:max_iter
@@ -16,10 +16,11 @@ function x = jacobi(A, b, tol=10e-6, max_iter=25)
             % Actualización de x(i) según la fórmula de Jacobi
             x(i) = (b(i) - sum) / A(i, i);
         end
-
-        fprintf('Número de iteración %d | x1 =%.5f, x2 = %.5f, x3 = %.5f \n', iter, x(1),x(2),x(3));
         % Criterio de parada basado en la norma del error
-        if norm(x - x_old, inf) < tol
+        dif_norma = norm(x, inf) - norm(x_old, inf);
+        fprintf('Número de iteración %d | x1 =%.5f, x2 = %.5f, x3 = %.5f | Norma: %.5f \n', iter, x(1),x(2),x(3), dif_norma);
+
+        if dif_norma < tol
             fprintf('Convergencia alcanzada en %d iteraciones.\n', iter);
             return;
         end
