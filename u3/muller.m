@@ -29,8 +29,6 @@ function root = muller(f, x0, x1, x2, tol=10e-6, max_iter=25)
         b = coef(2);
         c = coef(3);
 
-        disp('Coeficientes resultantes =');
-        disp(coef);
         % Discriminante del polinomio cuadrático
         D = sqrt(b^2 - 4 * a * c);
 

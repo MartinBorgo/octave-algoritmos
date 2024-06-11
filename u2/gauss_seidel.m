@@ -19,9 +19,10 @@ function x = gauss_seidel(A, b, tol=10e-6, max_iter=25)
             % Actualización de x(i) según la fórmula de Gauss-Seidel
             x(i) = (b(i) - sum1 - sum2) / A(i, i);
         end
-        fprintf('Número de iteración %d | x1 =%.5f, x2 = %.5f, x3 = %.5f \n', iter, x(1),x(2),x(3));
+        dif_norm = norm(x, inf) - norm(x_old, inf);
+        fprintf('Número de iteración %d | x1 =%.5f, x2 = %.5f, x3 = %.5f | Diferencia de Normas %.5f \n', iter, x(1),x(2),x(3), dif_norm);
         % Criterio de parada basado en la norma del error
-        if norm(x - x_old, inf) < tol
+        if dif_norm < tol
             fprintf('Convergencia alcanzada en %d iteraciones.\n', iter);
             return;
         end
