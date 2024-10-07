@@ -1,4 +1,4 @@
-function [t', y'] = runge_kutta_4(f, y0, t0, tf, h)
+function [t, y] = runge_kutta_4(f, y0, t0, tf, h)
     % f: función que define la EDO
     % y0: valor inicial
     % t0: tiempo inicial
