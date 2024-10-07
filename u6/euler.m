@@ -1,4 +1,4 @@
-function [t', y'] = euler(f, y0, t0, tf, h)
+function [t, y] = euler(f, y0, t0, tf, h)
     % f: función que define la EDO
     % y0: valor inicial
     % t0: tiempo inicial

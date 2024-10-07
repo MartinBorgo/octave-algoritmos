@@ -1,10 +1,16 @@
-function [t, y] = predictor_corrector(f, y0, t0, tf, h, order = 4)
+function [t, y] = predictor_corrector(f, y0, t0, tf, h, order = 4, pred = 3)
     % f: función que define la EDO
     % y0: valor inicial
     % t0: tiempo inicial
     % tf: tiempo final
     % h: paso de tiempo
     % order: orden del método (2, 3 o 4)
+    % pred: indica el método utilizado para calcular las predicciones necesarias para aplicar el
+    % metodo de predictor-corrector. Valores válidos para la variable 'pred':
+    %     0 -> Método de Euler.
+    %     1 -> Método de Euler modificado.
+    %     2 -> Método de Runge-Kutta grado 2.
+    %     3 -> Método de Runge-Kutta grado 4.
 
     % Inicialización
     t = t0:h:tf; % vector de tiempo
@@ -13,14 +19,36 @@ function [t, y] = predictor_corrector(f, y0, t0, tf, h, order = 4)
     y(1) = y0; % establece el valor inicial
 
     % Usar el método de Euler para calcular los primeros valores
-    for i = 1:(orden - 1)
+    for i = 1:(order - 1)
         if i < n
-            y(i + 1) = y(i) + h * f(t(i), y(i)); % Método de Euler
+            if pred == 0
+              % Metodo de Euler
+              y(i + 1) = y(i) + h * f(t(i), y(i));
+
+            elseif pred == 1
+              % Metodo de Euler Modificado
+              y_temp = y(i) + h * f(t(i), y(i));
+              y(i + 1) = y(i) + (h / 2) * (f(t(i), y(i)) + f(t(i + 1), y_temp));
+
+            elseif pred == 2
+              % Método de Runge-Kutta grado 2
+              k1 = f(t(i), y(i));
+              k2 = f(t(i) + h, y(i) + h * k1);
+              y(i + 1) = y(i) + (h / 2) * (k1 + k2);
+
+            elseif pred == 3
+              % Método de Runge-Kutta grado 4
+              k1 = f(t(i), y(i));
+              k2 = f(t(i) + h / 2, y(i) + (h / 2) * k1);
+              k3 = f(t(i) + h / 2, y(i) + (h / 2) * k2);
+              k4 = f(t(i) + h, y(i) + h * k3);
+              y(i + 1) = y(i) + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+            end
         end
     end
 
     % Método de Adams-Bashforth y Adams-Moulton
-    for i = 2:(n - 1)
+    for i = order:(n - 1)
         if order == 2
             % Predictor (Adams-Bashforth de 2 pasos)
             y_pred = y(i) + (h / 2) * (f(t(i), y(i)) + f(t(i - 1), y(i - 1)));
