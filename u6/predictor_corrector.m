@@ -5,12 +5,13 @@ function [t, y] = predictor_corrector(f, y0, t0, tf, h, order = 4, pred = 3)
     % tf: tiempo final
     % h: paso de tiempo
     % order: orden del método (2, 3 o 4)
-    % pred: indica el método utilizado para calcular las predicciones necesarias para aplicar el
-    % metodo de predictor-corrector. Valores válidos para la variable 'pred':
+    % pred: indica el método utilizado para calcular las predicciones previas necesarias para aplicar
+    % el metodo de predictor-corrector. Valores válidos para la variable 'pred':
     %     0 -> Método de Euler.
     %     1 -> Método de Euler modificado.
     %     2 -> Método de Runge-Kutta grado 2.
-    %     3 -> Método de Runge-Kutta grado 4.
+    %     3 -> Método de Runge-Kutta grado 3.
+    %     4 -> Método de Runge-Kutta grado 4.
 
     % Inicialización
     t = t0:h:tf; % vector de tiempo
@@ -31,13 +32,20 @@ function [t, y] = predictor_corrector(f, y0, t0, tf, h, order = 4, pred = 3)
               y(i + 1) = y(i) + (h / 2) * (f(t(i), y(i)) + f(t(i + 1), y_temp));
 
             elseif pred == 2
-              % Método de Runge-Kutta grado 2
+              % Método de Runge-Kutta orden 2
               k1 = f(t(i), y(i));
               k2 = f(t(i) + h, y(i) + h * k1);
               y(i + 1) = y(i) + (h / 2) * (k1 + k2);
 
-            elseif pred == 3
-              % Método de Runge-Kutta grado 4
+          elseif pred = 3
+              % Método de Runge-Kutta orden 3
+              k1 = h * f(t(i), y(i));
+              k2 = h * f(t(i) + h/2, y(i) + k1/2);
+              k3 = h * f(t(i) + h, y(i) + 2*k2 - k1);
+              y(i+1) = y(i) + (k1 + 4*k2 + k3) / 6;
+
+            elseif pred == 4
+              % Método de Runge-Kutta orden 4
               k1 = f(t(i), y(i));
               k2 = f(t(i) + h / 2, y(i) + (h / 2) * k1);
               k3 = f(t(i) + h / 2, y(i) + (h / 2) * k2);
