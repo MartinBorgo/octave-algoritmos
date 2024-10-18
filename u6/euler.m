@@ -11,5 +11,7 @@ function [t, y] = euler(f, y0, t0, tf, h)
 
     for i = 1:(length(t) - 1)
         y(i + 1) = y(i) + h * f(t(i), y(i));
+
+        fprintf('y%d -> %.6f + %.6f * %.6f = %.6f \n', i, y(i), h, f(t(i), y(i)), y(i + 1));
     end
 end

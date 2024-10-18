@@ -1,16 +1,16 @@
 function sistema_biologico(preys, hunters, h, d)
   disp(' <| SIMULACION EN PROCESO ... |> ');
   % Estadísticas de la simulación
-  maco=0;     %Maximo Conejo
-  mico=20000; %Minimo Conejo
-  mazo=0;     %Maximo Zorro
-  mizo=8000;  %Minimo Zorro
+  maco = 0;     %Maximo Conejo
+  mico = 20000; %Minimo Conejo
+  mazo = 0;     %Maximo Zorro
+  mizo = 8000;  %Minimo Zorro
 
   % Constantes utilizadas en las fórmulas
-  r=0.001;
-  s=0.01;
-  a=0.000002;
-  b=0.000001;
+  r = 0.001;
+  s = 0.01;
+  a = 0.000002;
+  b = 0.000001;
 
   % Funciones implicadas en la ecuación diferencial
   f = @(t, x, y) r * x - a * x * y;
@@ -40,33 +40,41 @@ function sistema_biologico(preys, hunters, h, d)
     X(i + 1) = X(i) + (k11 + 2 * k12 + 2 * k13 + k14) / 6;
     Y(i + 1) = Y(i) + (k21 + 2 * k22 + 2 * k23 + k24) / 6;
 
+    % Banderas modificables para mostrar la cantidad de conejos y zorros en un momento en particular
+    if i == 8000
+      fprintf('Cantidad de Conejos %6.1f --- Cantidad de Zorros %6.1f |> En %d Unidades de Tiempo \n', X(i + 1), Y(i + 1), i/10);
+    end
+    if i == 15000
+      fprintf('Cantidad de Conejos %6.1f --- Cantidad de Zorros %6.1f |> En %d Unidades de Tiempo \n', X(i + 1), Y(i + 1), i/10);
+    end
+
     % Maximo conejo
     if X(i + 1) > maco
        maco = X(i + 1);
-       tdpos = i/10;
+       tmaco = i/10;
     end
     % Minimo conejo
     if X(i + 1) < mico
        mico = X(i + 1);
-       tdneg = i/10;
+       tmico = i/10;
     end
     % Maximo zorros
     if Y(i + 1) > mazo
        mazo = Y(i + 1);
-       tvpos = i/10;
+       tmazo = i/10;
     end
     % Minimo zorros
     if Y(i + 1) < mizo
        mizo = Y(i + 1);
-       tvneg = i/10;
+       tmizo = i/10;
     end
   end
   %Presentacion de los resultados
   disp(' <| SIMULACION TERMINADA - DATOS RESULTANTES |> ');
-  fprintf('Poblacion maxima de presas: %3.4f Conejos \n', maco);
-  fprintf('Poblacion minima de presas: %3.1f Conejos \n', mico);
-  fprintf('Poblacion maxima de depredadores: %3.4f Zorros \n', mazo);
-  fprintf('Población minima de depredadores: %3.1f Zorros \n', mizo);
+  fprintf('Poblacion maxima de presas: %3.2f Conejos | Alacanzado a los %d Unidades de Tiempo \n', maco, tmaco);
+  fprintf('Poblacion minima de presas: %3.2f Conejos | Alacanzado a los %d Unidades de Tiempo \n', mico, tmico);
+  fprintf('Poblacion maxima de depredadores: %3.2f Zorros | Alacanzado a los %d Unidades de Tiempo \n', mazo, tmazo);
+  fprintf('Población minima de depredadores: %3.2f Zorros | Alacanzado a los %d Unidades de Tiempo \n', mizo, tmizo);
 
   %Graficacion de resultados
   plot(T,X,'-',T,Y,':');
