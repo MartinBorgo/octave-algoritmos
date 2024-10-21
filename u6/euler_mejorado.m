@@ -1,4 +1,4 @@
-function [t, y] = euler_mejorado(f, y0, t0, tf, h)
+function res = euler_mejorado(f, y0, t0, tf, h)
     % f: función que define la EDO
     % y0: valor inicial
     % t0: tiempo inicial
@@ -12,5 +12,9 @@ function [t, y] = euler_mejorado(f, y0, t0, tf, h)
     for i = 1:(length(t) - 1)
         y_pred = y(i) + h * f(t(i), y(i)); % predicción intermedia
         y(i + 1) = y(i) + (h / 2) * (f(t(i), y(i)) + f(t(i + 1), y_pred)); % corrección
+
+        fprintf('y%d -> %.6f + %.6f * (%.6f + %.6f) = %.6f \n',
+                i, y(i), h / 2, f(t(i), y(i)), f(t(i + 1), y_pred), y(i + 1));
     end
+    res = [t', y']
 end

@@ -13,8 +13,8 @@ function sistema_biologico(preys, hunters, h, d)
   b = 0.000001;
 
   % Funciones implicadas en la ecuación diferencial
-  f = @(t, x, y) r * x - a * x * y;
-  g = @(t, x, y) -s * y + b * x * y;
+  f = @(t, x, y) r * x - a * x * y * 0.9;
+  g = @(t, x, y) -s * y + b * x * y * 1.05;
 
   % Datos útiles para graficar los resultados y realizar las iteraciones
   T = 0:h:d;
