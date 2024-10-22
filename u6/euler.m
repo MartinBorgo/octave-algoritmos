@@ -1,4 +1,4 @@
-function [t, y] = euler(f, y0, t0, tf, h)
+function res = euler(f, y0, t0, tf, h)
     % f: función que define la EDO
     % y0: valor inicial
     % t0: tiempo inicial
@@ -15,4 +15,5 @@ function [t, y] = euler(f, y0, t0, tf, h)
         fprintf('y%d -> %.6f + %.6f * %.6f = %.6f \n',
                 i, y(i), h, f(t(i), y(i)), y(i + 1));
     end
+    res = [t', y']
 end
