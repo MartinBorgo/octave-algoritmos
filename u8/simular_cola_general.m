@@ -124,7 +124,7 @@ function simular_cola_general(duration, n_queue, n_server, mintl, maxtl, mints, 
     disp('ESTADISTICAS GLOBALES DE LA SIMULACIÓN');
     fprintf('Cantidad de entidades que llegaron: %d \n', arrived_entities);
     fprintf('Cantidad de entidades atendidas: %d \n', attended_entities);
-    fprintf('Tiempo total de sumulacion: %d \n', current_time);
+    fprintf('Tiempo total de simulacion: %d \n', current_time);
 
     disp('ESTADISTICAS PARA LAS COLAS');
     for i = 1:n_queue
@@ -138,7 +138,7 @@ function simular_cola_general(duration, n_queue, n_server, mintl, maxtl, mints, 
     disp('ESTADISTICAS PARA LOS SERVIDORES');
     for i = 1:n_server
       fprintf('Estadísticas para el servidor N°%d \n', i);
-      fprintf('Uso del servidor durante la simulación: %.2f\% \n', server_usage(i));
+      fprintf('Uso del servidor durante la simulación: %.2f%% \n', server_usage(i));
       disp('<|--------------------------------------------------|>');
     end
 end
@@ -163,5 +163,40 @@ end
 function time = generate_rand_time(min_time, max_time)
     % Genera un tiempo aleatorio entre el tiempo mínimo y máximo
     time = min_time + (max_time - min_time) * rand(1);
-    time = floor(tiempo * 100) / 100;  % Redondear el resultado a 2 dígitos decimales
+    time = floor(time * 100) / 100;  % Redondear el resultado a 2 dígitos decimales
 end
+
+#{
+% Configuración base de la Simulación 1
+duration = 25;         % Duración de la simulación
+mintl = 1;            % Tiempo mínimo entre llegadas
+maxtl = 4;            % Tiempo máximo entre llegadas
+mints = 1;            % Tiempo mínimo de servicio
+maxts = 5;            % Tiempo máximo de servicio
+queue_capacity = 100;  % Capacidad de la cola
+
+% Simulación 1: Sistema básico (1 cola, 1 servidor)
+disp('SIMULACIÓN 1: Sistema básico (1 cola, 1 servidor)');
+disp('====================================================');
+simular_cola_general(duration, 1, 1, mintl, maxtl, mints, maxts, queue_capacity);
+
+% Simulación 2: Sistema con múltiples servidores (1 cola, 2 servidores)
+disp('SIMULACIÓN 2: Sistema con múltiples servidores (1 cola, 2 servidores)');
+disp('====================================================');
+simular_cola_general(duration, 1, 2, mintl, maxtl, mints, maxts, queue_capacity);
+
+% Simulación 3: Sistema con múltiples colas (2 colas, 1 servidor)
+disp('SIMULACIÓN 3: Sistema con múltiples colas (2 colas, 1 servidor)');
+disp('====================================================');
+simular_cola_general(duration, 2, 1, mintl, maxtl, mints, maxts, queue_capacity);
+
+% Simulación 4: Sistema con múltiples colas y servidores (2 colas, 2 servidores)
+disp('SIMULACIÓN 4: Sistema con múltiples colas y servidores (2 colas, 2 servidores)');
+disp('====================================================');
+simular_cola_general(duration, 2, 2, mintl, maxtl, mints, maxts, queue_capacity);
+
+% Simulación 5: Sistema grande (3 colas, 3 servidores)
+disp('SIMULACIÓN 5: Sistema grande (3 colas, 3 servidores)');
+disp('====================================================');
+simular_cola_general(duration, 3, 3, mintl, maxtl, mints, maxts, queue_capacity);
+#}
