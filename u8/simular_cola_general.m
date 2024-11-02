@@ -24,9 +24,9 @@ function resultados = simular_cola_general(duration, n_queue, n_server, mintl, m
     acumulate_length = zeros(1, n_queue);           % Longitud acumulada por cola
 
     % Variables de los servidores
-    server_state = zeros(1, num_servidores);         % 0=libre, 1=ocupado
-    end_service_time = inf(1, num_servidores);       % Tiempo de finalización de cada Servidor
-    server_usage = zeros(1, num_servidores);         % Tiempo de uso
+    server_state = zeros(1, n_server);         % 0=libre, 1=ocupado
+    end_service_time = inf(1, n_server);       % Tiempo de finalización de cada Servidor
+    server_usage = zeros(1, n_server);         % Tiempo de uso
 
     % Contadores y eventos
     next_arrive_time = 0;           % Tiempo de la próxima llegada
@@ -43,7 +43,7 @@ function resultados = simular_cola_general(duration, n_queue, n_server, mintl, m
         for i = 1:n_queue
             acumulate_length(i) = acumulate_length(i) + queue_length(i) * delta_tiempo;
         end
-        for i = 1:num_servidores
+        for i = 1:n_server
             server_usage(i) = server_usage(i) + server_state(i) * delta_tiempo;
         end
 
@@ -123,7 +123,7 @@ function resultados = simular_cola_general(duration, n_queue, n_server, mintl, m
     end
 
     % Estadísticas por servidor
-    for i = 1:num_servidores
+    for i = 1:n_server
         resultados.server_usage(i) = (server_usage(i) / current_time) * 100;
     end
 end
