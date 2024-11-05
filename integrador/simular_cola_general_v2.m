@@ -1,4 +1,4 @@
-function simular_cola_general_v1(duration, n_queue, n_server, mintl, maxtl, mints, maxts, max_wait_time = 3, queue_capacity = 100)
+function simular_cola_general_v1(duration, n_queue, n_server, mintl, maxtl, mints, maxts, max_wait_time = 3, queue_capacity = 10)
     % Simula un sistema de múltiples colas y servidores
     % Parámetros:
     %     duration:       Duración total de la simulación.
@@ -11,7 +11,7 @@ function simular_cola_general_v1(duration, n_queue, n_server, mintl, maxtl, mint
     %     max_wait_time:  Tiempo máximo de espera permitido antes de que una entidad
     %                     abandone la cola, por defecto este valor esta seteado en 3.
     %     queue_capacity: Capacidad máxima de cada cola, por defecto este valor esta
-    %                     seteado en 100.
+    %                     seteado en 10.
 
     % Variables de tiempo
     current_time = 0;                               % Tiempo actual de la simulación
@@ -33,6 +33,9 @@ function simular_cola_general_v1(duration, n_queue, n_server, mintl, maxtl, mint
     % Contadores y eventos
     arrived_entities = 0;                           % Total de entidades que llegaron
     attended_entities = 0;                          % Total de entidades que fueron atendidas
+    rejected_entities = 0;                          % Entidades que salen del sistema porque todas las colas
+                                                    % estan en us máxima capacidad.
+
 
     % COMIENZO DE LA SIMULACIÓN
     while current_time < duration
@@ -75,6 +78,8 @@ function simular_cola_general_v1(duration, n_queue, n_server, mintl, maxtl, mint
                 if queue_length(shortest_queue) < queue_capacity
                     queue_length(shortest_queue) = queue_length(shortest_queue) + 1;
                     wait_queue(queue_length(shortest_queue), shortest_queue) = current_time;
+                else
+                    rejected_entities = rejected_entities + 1;
                 end
             end
 
@@ -140,7 +145,8 @@ function simular_cola_general_v1(duration, n_queue, n_server, mintl, maxtl, mint
     fprintf('Cantidad de entidades que llegaron: %d \n', arrived_entities);
     fprintf('Cantidad de entidades atendidas: %d \n', attended_entities);
     fprintf('Tiempo total de simulacion: %d \n', current_time);
-    fprintf('Total de entidades que abandonaron las colas: %d \n', sum(abandoned_entities));
+    fprintf('Total de entidades que abandonaron las colas por exceder el tiempo maximo de espera: %d \n', sum(abandoned_entities));
+    fprintf('Cantidad de entidades que salieron del sistema porque las colas estaban todas a su maxima capacidad: %d \n', rejected_entities);
 
     disp('ESTADISTICAS PARA LAS COLAS');
     for i = 1:n_queue
@@ -148,14 +154,14 @@ function simular_cola_general_v1(duration, n_queue, n_server, mintl, maxtl, mint
       fprintf('Tamaño promedio de la cola: %.2f \n', avarage_queue_lenght(i));
       fprintf('Tiempo de espera total en la cola: %.2f \n', total_wait_queue(i));
       fprintf('Tiempo de espera promedio: %.2f \n', avarage_waiting_queue_time(i));
-      fprintf('Cantida de entidades que abandonaron la cola: %d \n', abandoned_entities(i));
+      fprintf('Cantidad de entidades que abandonaron la cola: %d \n', abandoned_entities(i));
       disp('<|--------------------------------------------------|>');
     end
 
     disp('ESTADISTICAS PARA LOS SERVIDORES');
     for i = 1:n_server
       fprintf('Estadísticas para el servidor N°%d \n', i);
-      fprintf('Uso del servidor durante la simulación: %.2f%% \n', server_usage(i));
+      fprintf('Uso del servidor: %.2f%% \n', server_usage(i));
       disp('<|--------------------------------------------------|>');
     end
 end
