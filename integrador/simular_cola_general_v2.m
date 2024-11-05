@@ -1,14 +1,17 @@
 function simular_cola_general_v1(duration, n_queue, n_server, mintl, maxtl, mints, maxts, max_wait_time = 3, queue_capacity = 100)
     % Simula un sistema de múltiples colas y servidores
     % Parámetros:
-    %     duration: Duración total de la simulación.
-    %     n_queue: Número de colas en el sistema
-    %     n_server: Número de servidores disponibles
-    %     mintl: Tiempo mínimo entre llegadas
-    %     maxtl: Tiempo máximo entre llegadas
-    %     mints: Tiempo mínimo de servicio
-    %     maxts: Tiempo máximo de servicio
-    %     queue_capacity: Capacidad máxima de cada cola, valor por defecto 100
+    %     duration:       Duración total de la simulación.
+    %     n_queue:        Número de colas utilizadas en la simulación.
+    %     n_server:       Número de servidores utilizados en la simulación.
+    %     mintl:          Tiempo mínimo entre llegadas.
+    %     maxtl:          Tiempo máximo entre llegadas.
+    %     mints:          Tiempo mínimo de servicio.
+    %     maxts:          Tiempo máximo de servicio.
+    %     max_wait_time:  Tiempo máximo de espera permitido antes de que una entidad
+    %                     abandone la cola, por defecto este valor esta seteado en 3.
+    %     queue_capacity: Capacidad máxima de cada cola, por defecto este valor esta
+    %                     seteado en 100.
 
     % Variables de tiempo
     current_time = 0;                               % Tiempo actual de la simulación
@@ -35,8 +38,8 @@ function simular_cola_general_v1(duration, n_queue, n_server, mintl, maxtl, mint
     while current_time < duration
         % Determina el próximo evento que se va a ejecutar
         [current_time, event_type, server_id] = get_next_event(next_arrive_time, end_service_time);
-        % Actualiza las estadísticas sobre la cantidad acumulada entidades
-        % en las colas y los tiempos de uso del servidor
+        % Actualiza las estadísticas sobre la cantidad acumulada de
+        % entidades en las colas y los tiempos de uso del servidor
         delta = current_time - last_event_time;
         for i = 1:n_queue
             acumulate_length(i) = acumulate_length(i) + queue_length(i) * delta;
@@ -117,7 +120,7 @@ function simular_cola_general_v1(duration, n_queue, n_server, mintl, maxtl, mint
     % CALCULO DE ESTADISTICAS ADICIONALES
     % Estadísticas por cola
 
-    for i = 1:n_queue
+      for i = 1:n_queue
         avarage_queue_lenght(i) = acumulate_length(i) / current_time;
 
         if attended_entities > 0
