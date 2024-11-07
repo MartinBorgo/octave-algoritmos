@@ -19,7 +19,7 @@ function simular_cola_simple(arrival_times = [1, 2, 3, 4, 5, 6], service_times =
     attended_entities = 0;    % Total de clientes que fueron atendidos
 
     % Gráfica de la evolución de la longitud de la cola
-    plot_queue_length = zeros(1, duration);
+    plot_buffer = zeros(1, duration);
 
     % COMIENZO DE LA SIMULACIÓN
     while current_time < duration
@@ -83,7 +83,7 @@ function simular_cola_simple(arrival_times = [1, 2, 3, 4, 5, 6], service_times =
         end
 
         % Registra la longitud de la cola en cada minuto
-        plot_queue_length(ceil(current_time) + 1) = queue_length;
+        plot_buffer(ceil(current_time) + 1) = queue_length;
 
         last_event_time = current_time;
     end
@@ -101,14 +101,9 @@ function simular_cola_simple(arrival_times = [1, 2, 3, 4, 5, 6], service_times =
 
     % GRÁFICA DE LA EVOLUCIÓN DE LA LONGITUD DE LA COLA
     figure;
-    plot(0:duration-1, plot_queue_length(1:20));
+    plot(0:duration-1, plot_buffer(1:20));
     title('Evolución de la Longitud de la Cola');
     xlabel('Tiempo (minutos)');
     ylabel('Longitud de la Cola');
-end
-
-function [time, e_type] = get_next_event(arrived_time, server_end_time)
-    % Determina cuál es el próximo evento que va a ocurrir
-
 end
 
