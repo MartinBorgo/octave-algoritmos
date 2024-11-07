@@ -83,7 +83,11 @@ function simular_cola_simple(arrival_times = [1, 2, 3, 4, 5, 6], service_times =
         end
 
         % Registra la longitud de la cola en cada minuto
-        plot_buffer(ceil(current_time) + 1) = queue_length;
+        if ceil(current_time) == 0
+          plot_buffer(1) = queue_length;
+        else
+          plot_buffer(ceil(current_time)) = queue_length;
+        end
 
         last_event_time = current_time;
     end
