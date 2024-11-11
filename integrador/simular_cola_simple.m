@@ -1,4 +1,10 @@
 function simular_cola_simple(arrival_times = [1, 2, 3, 4, 5, 6], service_times = [2, 2.5], duration = 20)
+    % Simula un sistema de una única cola y un único servidore
+    % Parámetros:
+    %     arrival_times:      Lista con los tiempos a los que pueden arribar las entidades.
+    %     service_times:      Lista con los timepos de servicio del servidor.
+    %     duration:           Duración de la simulación.
+
     % Variables de tiempo
     current_time = 0;         % Tiempo actual de la simulación
     next_arrive_time = 0;     % Tiempo de la próxima llegada
