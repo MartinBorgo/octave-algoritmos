@@ -1,19 +1,19 @@
-function simular_cola_general(duration, mintl, maxtl, mints, maxts, n_queue = 1, n_server = 1, max_wait_time = 3, queue_capacity = 10)
+function simular_cola_general(simulation_duration, mintl, maxtl, mints, maxts, n_queue = 1, n_server = 1, max_wait_time = 3, queue_capacity = 10)
     % Simula un sistema de múltiples colas y servidores
     % Parámetros:
-    %     duration:       Duración total de la simulación.
-    %     n_queue:        Número de colas utilizadas en la simulación, por defecto
-    %                     este valor esta seteado en 1.
-    %     n_server:       Número de servidores utilizados en la simulación, por defecto
-    %                     este valor esta seteado en 1.
-    %     mintl:          Tiempo mínimo entre llegadas.
-    %     maxtl:          Tiempo máximo entre llegadas.
-    %     mints:          Tiempo mínimo de servicio.
-    %     maxts:          Tiempo máximo de servicio.
-    %     max_wait_time:  Tiempo máximo de espera permitido antes de que una entidad
-    %                     abandone la cola, por defecto este valor esta seteado en 3.
-    %     queue_capacity: Capacidad máxima de cada cola, por defecto este valor esta
-    %                     seteado en 10.
+    %     simulation_duration:   Duración total de la simulación.
+    %     n_queue:               Número de colas utilizadas en la simulación, por defecto
+    %                            este valor esta seteado en 1.
+    %     n_server:              Número de servidores utilizados en la simulación, por defecto
+    %                            este valor esta seteado en 1.
+    %     mintl:                 Tiempo mínimo entre llegadas.
+    %     maxtl:                 Tiempo máximo entre llegadas.
+    %     mints:                 Tiempo mínimo de servicio.
+    %     maxts:                 Tiempo máximo de servicio.
+    %     max_wait_time:         Tiempo máximo de espera permitido antes de que una entidad
+    %                            abandone la cola, por defecto este valor esta seteado en 3.
+    %     queue_capacity:        Capacidad máxima de cada cola, por defecto este valor esta
+    %                            seteado en 10.
 
     % Variables de tiempo
     current_time = 0;                               % Tiempo actual de la simulación.
@@ -40,7 +40,7 @@ function simular_cola_general(duration, mintl, maxtl, mints, maxts, n_queue = 1,
                                                     % estan en us máxima capacidad.
 
     % COMIENZO DE LA SIMULACIÓN
-    while current_time < duration
+    while current_time < simulation_duration
         % Determina el próximo evento que se va a ejecutar
         [current_time, event_type, server_id] = get_next_event(next_arrive_time, end_service_time);
         % Actualiza las estadísticas sobre la cantidad acumulada de
@@ -155,6 +155,7 @@ function simular_cola_general(duration, mintl, maxtl, mints, maxts, n_queue = 1,
     fprintf('Tiempo total de simulacion: %d \n', current_time);
     fprintf('Total de entidades que abandonaron las colas por exceder el tiempo maximo de espera: %d \n', sum(abandoned_entities));
     fprintf('Cantidad de entidades que salieron del sistema porque todas las colas estában a su maxima capacidad: %d \n', rejected_entities);
+    disp('<|--------------------------------------------------|>');
 
     disp('ESTADISTICAS PARA LAS COLAS');
     for i = 1:n_queue
@@ -196,43 +197,9 @@ function [time, e_type, server_id] = get_next_event(arrived_time, servers_end_se
     end
 end
 
-function time = (min_time, max_time)
+function time = generate_rand_time(min_time, max_time)
     % Genera un tiempo aleatorio entre el tiempo mínimo y máximo
     time = min_time + (max_time - min_time) * rand(1);
     time = floor(time * 100) / 100;  % Redondear el resultado a 2 dígitos decimales
 end
 
-#{
-% Configuración base de la Simulación 1
-duration = 25;         % Duración de la simulación
-mintl = 1;            % Tiempo mínimo entre llegadas
-maxtl = 4;            % Tiempo máximo entre llegadas
-mints = 1;            % Tiempo mínimo de servicio
-maxts = 5;            % Tiempo máximo de servicio
-queue_capacity = 100;  % Capacidad de la cola
-
-% Simulación 1: Sistema básico (1 cola, 1 servidor)
-disp('SIMULACIÓN 1: Sistema básico (1 cola, 1 servidor)');
-disp('====================================================');
-simular_cola_general(duration, 1, 1, mintl, maxtl, mints, maxts, queue_capacity);
-
-% Simulación 2: Sistema con múltiples servidores (1 cola, 2 servidores)
-disp('SIMULACIÓN 2: Sistema con múltiples servidores (1 cola, 2 servidores)');
-disp('====================================================');
-simular_cola_general(duration, 1, 2, mintl, maxtl, mints, maxts, queue_capacity);
-
-% Simulación 3: Sistema con múltiples colas (2 colas, 1 servidor)
-disp('SIMULACIÓN 3: Sistema con múltiples colas (2 colas, 1 servidor)');
-disp('====================================================');
-simular_cola_general(duration, 2, 1, mintl, maxtl, mints, maxts, queue_capacity);
-
-% Simulación 4: Sistema con múltiples colas y servidores (2 colas, 2 servidores)
-disp('SIMULACIÓN 4: Sistema con múltiples colas y servidores (2 colas, 2 servidores)');
-disp('====================================================');
-simular_cola_general(duration, 2, 2, mintl, maxtl, mints, maxts, queue_capacity);
-
-% Simulación 5: Sistema grande (3 colas, 3 servidores)
-disp('SIMULACIÓN 5: Sistema grande (3 colas, 3 servidores)');
-disp('====================================================');
-simular_cola_general(duration, 3, 3, mintl, maxtl, mints, maxts, queue_capacity);
-#}
