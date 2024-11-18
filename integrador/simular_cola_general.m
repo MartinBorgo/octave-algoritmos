@@ -69,7 +69,7 @@ function simular_cola_general(simulation_duration, mintl, maxtl, mints, maxts, n
             free_server_id = find(server_state == 0, 1);
 
             % Como la función find devuelve un array vacio si no tiene exito
-            % se comprueva que el valor sea un número, ya que ~isempty(1) = true
+            % se comprueba que el valor sea un número, ya que ~isempty(1) = true
             if ~isempty(free_server_id)
                 % Asigna la entidad directamente al primer servidor libre encontrado
                 server_state(free_server_id) = 1;
@@ -88,7 +88,10 @@ function simular_cola_general(simulation_duration, mintl, maxtl, mints, maxts, n
 
         elseif event_type == 2
             % Actualiza la cantidad de entidades atendidas por el servidor en cuestion
-            server_stats(server_id) = server_stats(server_id) + 1;
+
+            if server_state(server_id) == 1
+              server_stats(server_id) = server_stats(server_id) + 1;
+            end
             % Libera el servidor que esa entidad estaba utilizando y cambia
             % su tiempo de fin de servicio a infinito
             server_state(server_id) = 0;
@@ -165,7 +168,7 @@ function simular_cola_general(simulation_duration, mintl, maxtl, mints, maxts, n
     % IMPRECIÓN DE LOS DATOS RESULTANTES DE LA SUMULACIÓN
     disp('ESTADISTICAS GLOBALES DE LA SIMULACIÓN');
     fprintf('Cantidad de entidades que llegaron: %d \n', arrived_entities);
-    fprintf('Cantidad de entidades atendidas: %d \n', sum(attended_entities));
+    fprintf('Cantidad de entidades en espera atendidas: %d \n', sum(attended_entities));
     fprintf('Tiempo total de simulacion: %d \n', current_time);
     fprintf('Total de entidades que abandonaron las colas por exceder el tiempo maximo de espera: %d \n', sum(abandoned_entities));
     fprintf('Cantidad de entidades que salieron del sistema porque todas las colas estában a su maxima capacidad: %d \n', rejected_entities);
@@ -179,8 +182,8 @@ function simular_cola_general(simulation_duration, mintl, maxtl, mints, maxts, n
       fprintf('Tamaño promedio de la cola: %.2f \n', average_queue_lenght(i));
       fprintf('Tiempo de espera total en la cola: %.2f \n', total_wait_queue(i));
       fprintf('Tiempo de espera promedio: %.2f \n', average_waiting_queue_time(i));
-      fprintf('Cantidad de entidades atendidas: %d \n', attended_entities(i));
-      fprintf('Cantidad de entidades que dejaron la fila por exceder el tiempo mínimo de espera %d \n', abandoned_entities(i));
+      fprintf('Cantidad de entidades en espera atendidas: %d \n', attended_entities(i));
+      fprintf('Cantidad de entidades que dejaron la fila por exceder el tiempo maximo de espera %d \n', abandoned_entities(i));
       disp('<|--------------------------------------------------|>');
     end
 
@@ -188,7 +191,7 @@ function simular_cola_general(simulation_duration, mintl, maxtl, mints, maxts, n
     for i = 1:n_server
       fprintf('Estadísticas para el servidor N°%d \n', i);
       fprintf('Uso del servidor: %.2f%% \n', server_usage(i));
-      fprintf('Cantidad de entidades atenidadas por el servidor: %d \n', server_stats(i));
+      fprintf('Cantidad de entidades atendidas por el servidor: %d \n', server_stats(i));
       disp('<|--------------------------------------------------|>');
     end
 end
@@ -219,4 +222,3 @@ function time = generate_rand_time(min_time, max_time)
     time = min_time + (max_time - min_time) * rand(1);
     time = floor(time * 100) / 100;  % Redondear el resultado a 2 dígitos decimales
 end
-
