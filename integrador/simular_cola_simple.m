@@ -6,23 +6,23 @@ function simular_cola_simple(arrival_times = [1, 2, 3, 4, 5, 6], service_times =
     %     duration:           Duración de la simulación.
 
     % Variables de tiempo
-    current_time = 0;         % Tiempo actual de la simulación
-    next_arrive_time = 0;     % Tiempo de la próxima llegada
-    last_event_time = 0;      % Tiempo del último evento procesado
+    current_time = 0;         % Tiempo actual de la simulación.
+    next_arrive_time = 0;     % Tiempo de la próxima llegada.
+    last_event_time = 0;      % Tiempo del último evento procesado.
 
     % Variables de la cola
-    queue_length = 0;         % Longitud actual de la cola
-    wait_queue = [];          % Lista de tiempos de llegada de los clientes en cola
-    total_wait_time = 0;      % Tiempo total de espera de los clientes
+    queue_length = 0;         % Longitud actual de la cola.
+    wait_queue = [];          % Lista de tiempos de llegada de los clientes en cola.
+    total_wait_time = 0;      % Tiempo total de espera de los clientes.
 
     % Variables del servidor
-    server_state = 0;         % Estado del servidor (0=libre, 1=ocupado)
-    server_usage = 0;
-    end_service_time = inf;   % Tiempo de finalización del servicio actual
+    server_state = 0;         % Estado del servidor (0=libre, 1=ocupado).
+    server_usage = 0;         % Tiempo de uso del servidor.
+    end_service_time = inf;   % Tiempo de finalización del servicio actual.
 
     % Contadores y eventos
-    arrived_entities = 0;     % Total de clientes que llegaron
-    attended_entities = 0;    % Total de clientes que fueron atendidos
+    arrived_entities = 0;     % Total de clientes que llegaron.
+    attended_entities = 0;    % Total de clientes que fueron atendidos.
 
     % Gráfica de la evolución de la longitud de la cola
     plot_buffer = zeros(1, duration);
